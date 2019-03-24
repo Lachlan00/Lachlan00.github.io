@@ -2,7 +2,7 @@
 
 make_index.py </path/to/directory> [--header <header text>]
 
-generate_index.py . [--header Code Pastebin]
+python generate_index.py . [--header Code Pastebin]
 
 to remove index.html files in bash:
 find . -name index.html -delete
