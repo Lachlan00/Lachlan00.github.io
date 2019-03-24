@@ -77,7 +77,7 @@ import argparse
 from mako.template import Template
 
 def fun(dir,rootdir):
-    if not dir[0] == '.':
+    if not dir[0:6] == './.git':
         print('Processing: '+dir)
         filenames = [fname for fname in sorted(os.listdir(dir))
                   if fname not in EXCLUDED and os.path.isfile(dir+fname)]
