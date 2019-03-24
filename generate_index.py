@@ -1,6 +1,14 @@
 """ Build index from directory listing
 
 make_index.py </path/to/directory> [--header <header text>]
+
+generate_index.py . [--header Code Pastebin]
+
+to remove index.html files in bash:
+find . -name index.html -delete
+
+from:
+https://stackoverflow.com/questions/39048654/how-to-enable-directory-indexing-on-github-pages
 """
 from __future__ import print_function
 import os.path, time
@@ -19,7 +27,7 @@ INDEX_TEMPLATE = r"""
     <table>
         <tbody>
             <tr>
-                <th valign="top"><img src="${ROOTDIR}images/blank.gif"
+                <th valign="top"><img src="${ROOTDIR}images/mprg.ico"
                     alt="[ICO]"></th>
                 <th><a href="?C=N;O=D">Name</a></th>
                 <th><a href="?C=M;O=A">Last modified</a></th>
@@ -77,7 +85,7 @@ import argparse
 from mako.template import Template
 
 def fun(dir,rootdir):
-    if not dir[0:6] == './.git':
+    if not dir[0:6] == './.git' and not dir[-9:] == '.DS_Store':
         print('Processing: '+dir)
         filenames = [fname for fname in sorted(os.listdir(dir))
                   if fname not in EXCLUDED and os.path.isfile(dir+fname)]
