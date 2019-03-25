@@ -76,7 +76,7 @@ INDEX_TEMPLATE = r"""
 </html>
 """
 
-EXCLUDED = ['index.html', '.DS_Store']
+EXCLUDED = ['index.html', '.DS_Store', '.git']
 
 import os
 import argparse
