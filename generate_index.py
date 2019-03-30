@@ -12,6 +12,15 @@ https://stackoverflow.com/questions/39048654/how-to-enable-directory-indexing-on
 """
 from __future__ import print_function
 import os.path, time
+import subprocess
+
+print('Deleteing previous index files..')
+
+bashCommand = 'find . -name index.html -delete'
+process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+output, error = process.communicate()
+
+print('Building new index files..')
 
 INDEX_TEMPLATE = r"""
 
