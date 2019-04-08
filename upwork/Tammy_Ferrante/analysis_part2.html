@@ -290,36 +290,37 @@ plot(fitVal)</code></pre>
 <div id="run-the-one-way-manova-using-your-statistical-software-of-choice." class="section level3">
 <h3>4. Run the one-way MANOVA using your statistical software of choice.</h3>
 <hr />
-<p>Now we get to run the MANOVA. First let’s look at the response overall and then break it down to each variable.</p>
-<pre class="r"><code>summary(fit)</code></pre>
-<pre><code>##               Df   Pillai approx F num Df den Df    Pr(&gt;F)    
-## CollarColor    3 0.036677   5.0746      9   3690 7.668e-07 ***
-## Residuals   1230                                              
+<p>Now we get to run the MANOVA. First let’s look at the response overall and then break it down to each variable. First we need to refit the model as we removed the outliers before.</p>
+<pre class="r"><code>fit &lt;- manova(cbind(ValuesDomain, MediatorDomain, FulfillmentDomain) ~ CollarColor, data = df)
+summary(fit)</code></pre>
+<pre><code>##               Df   Pillai approx F num Df den Df   Pr(&gt;F)    
+## CollarColor    3 0.040508   5.1009      9   3354 7.01e-07 ***
+## Residuals   1118                                             
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>Well it’s pretty convincing that <code>CollarColor</code> is having an affect of some kind! Let’s break it down further and look at each DV in isolation.</p>
 <pre class="r"><code>summary(aov(fit))</code></pre>
 <pre><code>##  Response ValuesDomain :
-##               Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## CollarColor    3   34.44 11.4799  7.3365 7.098e-05 ***
-## Residuals   1230 1924.65  1.5648                      
+##               Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## CollarColor    3   30.2 10.0656  9.4139 3.806e-06 ***
+## Residuals   1118 1195.4  1.0692                      
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##  Response MediatorDomain :
-##               Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## CollarColor    3   33.56 11.1882  7.5927 4.942e-05 ***
-## Residuals   1230 1812.44  1.4735                      
+##               Df  Sum Sq Mean Sq F value   Pr(&gt;F)   
+## CollarColor    3   13.36  4.4549  4.4157 0.004273 **
+## Residuals   1118 1127.93  1.0089                    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##  Response FulfillmentDomain :
-##               Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## CollarColor    3   33.56 11.1883  7.3459 7.004e-05 ***
-## Residuals   1230 1873.38  1.5231                      
+##               Df Sum Sq Mean Sq F value   Pr(&gt;F)   
+## CollarColor    3   16.4  5.4677  5.1266 0.001591 **
+## Residuals   1118 1192.4  1.0666                    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-<p>Indeed the effect appears to be significant overall the dependent variables. Especially for the <code>MediatorDomain</code>. Time to break it down further with a post-hoc analysis.</p>
+<p>Indeed the effect appears to be significant overall the dependent variables. Especially for the <code>ValuesDomain</code>. Time to break it down further with a post-hoc analysis.</p>
 </div>
 <div id="conduct-the-most-appropriate-post-hoc-analysis." class="section level3">
 <h3>5. Conduct the most appropriate post-hoc analysis.</h3>
@@ -426,9 +427,9 @@ plot.tukeyGroup &lt;- function(TUKEY, DV, variable){
 <hr />
 <p>We have performed a MANOVA on multiple dependent variables and have shown that <code>CollarColor</code> has a significant effect on Leadership qualities.</p>
 <pre class="r"><code>summary(fit)</code></pre>
-<pre><code>##               Df   Pillai approx F num Df den Df    Pr(&gt;F)    
-## CollarColor    3 0.036677   5.0746      9   3690 7.668e-07 ***
-## Residuals   1230                                              
+<pre><code>##               Df   Pillai approx F num Df den Df   Pr(&gt;F)    
+## CollarColor    3 0.040508   5.1009      9   3354 7.01e-07 ***
+## Residuals   1118                                             
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>Because of the clear results we are able to reject the null hypothesis that “<em>There is no relationship between job level and leadership qualities</em>”</p>
@@ -484,31 +485,31 @@ plot(fitVal)</code></pre>
 <hr />
 <p>MANOVA:</p>
 <pre class="r"><code>summary(fit)</code></pre>
-<pre><code>##               Df   Pillai approx F num Df den Df    Pr(&gt;F)    
-## CollarColor    3 0.036677   5.0746      9   3690 7.668e-07 ***
-## Residuals   1230                                              
+<pre><code>##               Df   Pillai approx F num Df den Df   Pr(&gt;F)    
+## CollarColor    3 0.040508   5.1009      9   3354 7.01e-07 ***
+## Residuals   1118                                             
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>for each DV:</p>
 <pre class="r"><code>summary(aov(fit))</code></pre>
 <pre><code>##  Response ValuesDomain :
-##               Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## CollarColor    3   34.44 11.4799  7.3365 7.098e-05 ***
-## Residuals   1230 1924.65  1.5648                      
+##               Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## CollarColor    3   30.2 10.0656  9.4139 3.806e-06 ***
+## Residuals   1118 1195.4  1.0692                      
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##  Response MediatorDomain :
-##               Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## CollarColor    3   33.56 11.1882  7.5927 4.942e-05 ***
-## Residuals   1230 1812.44  1.4735                      
+##               Df  Sum Sq Mean Sq F value   Pr(&gt;F)   
+## CollarColor    3   13.36  4.4549  4.4157 0.004273 **
+## Residuals   1118 1127.93  1.0089                    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##  Response FulfillmentDomain :
-##               Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
-## CollarColor    3   33.56 11.1883  7.3459 7.004e-05 ***
-## Residuals   1230 1873.38  1.5231                      
+##               Df Sum Sq Mean Sq F value   Pr(&gt;F)   
+## CollarColor    3   16.4  5.4677  5.1266 0.001591 **
+## Residuals   1118 1192.4  1.0666                    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>There was a clear significant relationship between <code>CollarColor</code> and leadership qualities. Consequently we are able to reject the null hypothesis that “<em>There is no relationship between job level and leadership qualities</em>”</p>
