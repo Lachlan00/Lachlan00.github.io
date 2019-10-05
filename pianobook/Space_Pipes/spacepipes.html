@@ -66,6 +66,54 @@ cents = 1200 \times \log_{2}(478/466.16) - (478/466.16) \\
 <p>Now I layered this sound over the space organ sound and added in the laser eye controls. This bit was really fun. I won’t go into the Kontakt scripting for this but my script in the Kontakt instrument patch is all open so feel free to dissect it. Also feel free to get in contact if you have any questions about any of this.</p>
 <p>I was pretty pleased with the final result. I now have a pretty cool space organ that can be layered with some really interesting granular textures that can make for some really cool drones! Once again if you haven’t already <a href="https://www.dropbox.com/s/mijja37b212cjlz/SpacePipes.zip?dl=0"><strong>download the instrument!</strong></a> and have a play with it yourself!</p>
 <p>Thanks for reading! Feel free to drop me a line at dewitt.musicstudios@gmail.com! Cheers!
+<h2 id="bonus---generating-the-laser-eye-controller-ui">5. Bonus - Generating the Laser Eye Controller UI</h2>
+<p>I had a few questions about how I made the laser eye “knob” controller. I thought I’d add a little bit on to the end of this post to explain how it was done. Basically knob files in Kontakt are just a vertically stacked PNG image with every frame (i.e. every state of the knob) stacked vertically on top of each other. <a href="https://henrik242.dk/wp-content/uploads/sites/4/2014/03/metal_orangeknob_2.png">Here’s an example</a>.</p>
+<p>So in order to make my “laser eye” knob controller I basically just drew the image of lasers as a PNG and had 101 frames each with a different level of “opacity” (i.e. how transparent an image is). Now you can do this in 2 ways, you could (1) make your image and edit it 101 times and save a whole bunch of versions with different opacity and then stack them all vertically on top of each other (do not do this! Too much work!) or, (2) we can do a bit of simple shell scripting to do all of this automatically.</p>
+<p>Obviously we’re going to do the latter because we want to avoid hard work at all cost! The first step is to take our amazing image of laser eyes.</p>
+<p><img src="https://lachlan00.github.io/pianobook/Space_Pipes/imgs/LaserEyes_orig.png" alt="Laser Eyes" width="600"><br>
+<em>A truly amazing piece of art!</em></p>
+<p>Now we want to create a bunch of copies of this image with different levels of transparency. We can do this using a command line tool called <a href="https://imagemagick.org/">ImageMagick</a>. We’re going to automate this process using a simple shell script like so.</p>
+<pre class=" language-shell"><code class="prism  language-shell">#!/bin/bash
+for i in {1..101}
+do
+   idx=$(expr 101 - $i)
+   n=$(printf %03d $idx)
+   convert LaserEyes_orig.png -matte -channel A +level 0,$idx% +channel laser$n.png
+done
+</code></pre>
+<p>So what this does is loop 101 times and on each loop produces and PNG with a slightly different alpha channel (i.e. different opacity). Save this script as <code>alpha_dup.sh</code> and then we can run it from our terminal using <code>bash alpha_dup.sh</code>. This should produce a directory with all our laser eye PNG frames.</p>
+<p><img src="https://lachlan00.github.io/pianobook/Space_Pipes/imgs/laser-files.png" alt="Laser Eye Files" width="600"><br>
+<em>All the files that were generated</em></p>
+<p>Now that we have all out files we can join all of these vertically using another simple ImageMagick command called <code>-append</code> to join all our images together vertically (ordered by the filenames). The <code>*</code> is just a wildcard that means all files ending with .png.</p>
+<pre class=" language-sh"><code class="prism  language-sh">convert -append *.png LaserEyes_render.png
+</code></pre>
+<p>And hey presto we have a joined png file ready to be used as a knob inside Kontakt! <a href="https://lachlan00.github.io/pianobook/Space_Pipes/imgs/LaserEyes_render.png">Here’s an example of the final product</a>. You’ll probably have to zoom in to see the frames properly. Now we just load it into our Kontakt script as normal…</p>
+<pre><code>{##### Laser Eyes - Pipes #####}
+{ Control Bagpipe Drone Volume and cool effect}
+{ create the control - must be a slider }
+declare ui_slider $laser_eyes(0, 870000)
+{ hide the slider parts }
+hide_part($laser_eyes,  $HIDE_PART_BG .or. $HIDE_PART_MOD_LIGHT .or. $HIDE_PART_TITLE .or. $HIDE_PART_VALUE)
+{ assign the image file } 
+set_control_par_str(get_ui_id($laser_eyes),  $CONTROL_PAR_PICTURE, "LaserEyes")
+{ place it on the performance view }
+move_control_px($laser_eyes, 102, 96)
+{ control how mouse movements should affect the control }
+set_control_par(get_ui_id($laser_eyes), $CONTROL_PAR_MOUSE_BEHAVIOUR, 5000)
+{ Make default value }
+set_knob_defval($laser_eyes, 0)
+make_persistent($laser_eyes)
+{make extra atttacke variable - to set minimum}
+declare $laser_attack_min
+$laser_attack_min := 650000
+declare $laser_attack
+$laser_attack := $laser_attack_min
+</code></pre>
+<p>So there ya have it! Good luck out there!</p>
+</div>
+</body>
+
+</html>
 </div>
 </body>
 
