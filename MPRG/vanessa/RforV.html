@@ -385,7 +385,7 @@ df &lt;- read.csv(&quot;ALL_VA_&amp;_BB.csv&quot;)</code></pre>
 <pre class="r"><code>colnames(df) &lt;- c('pair','behaviour','behaviour_type','date','month','time','hour','daylight')</code></pre>
 <div id="fixing-data-reading-errors" class="section level3">
 <h3>Fixing data reading errors</h3>
-<p>I noticed that “Circling” behaviour type has an issue where it is followed by an odd hexcode (“Circling <a0>”) which is causing it not to diplay as a label. In the string this is represented as “\xa0” which is a ‘non breaking space’ according to google (I don’t know a lot about unicode special characters). This is somehting that has come from Excel I think. Here’s an exmaple:</p>
+<p>I noticed that “Circling” behaviour type has an issue where it is followed by an odd hexcode (“Circling &lt;a0&gt;”) which is causing it not to diplay as a label. In the string this is represented as “\xa0” which is a ‘non breaking space’ according to google (I don’t know a lot about unicode special characters). This is somehting that has come from Excel I think. Here’s an exmaple:</p>
 <pre class="r"><code>df$behaviour_type[84:88]</code></pre>
 <pre><code>## [1] Ruffle feathers  Circling \xa0    Circling \xa0    Wing display    
 ## [5] E - repeated woo
