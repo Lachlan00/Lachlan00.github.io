@@ -22,13 +22,18 @@ read_V_csv <- function(fn){
 ###############################################
 # 2. Function for plotting behavioural types #
 ###############################################
-plot_behaviour <- function(df, behaviours, split_months=FALSE){
+plot_behaviour <- function(df, behaviours='all', split_months=FALSE){
   # make sure behaviour is a factor
   df$behaviour_type <- as.factor(df$behaviour_type)
   # filter for behaviours
-  df <- df[df$behaviour_type %in% behaviours,]
-  # set factor levels
-  df$behaviour_type <- factor(df$behaviour_type, levels=behaviours)
+  if (behaviours != 'all'){
+    df <- df[df$behaviour_type %in% behaviours,]
+    # set factor levels
+    df$behaviour_type <- factor(df$behaviour_type, levels=behaviours)
+  } else {
+    # set factor levels
+    df$behaviour_type <- factor(df$behaviour_type)
+  }
   # if not splitting months make plot for all times
   if (!split_months){
     p <- plot_behaviour_sub(df, 'Behaviour Frequencies')
@@ -56,6 +61,8 @@ plot_behaviour_sub <- function(df, title){
     scale_x_discrete(drop=FALSE) +
     scale_fill_discrete(drop=FALSE) +
     labs(fill='Behaviour Type') +
-    ggtitle(title)
+    ggtitle(title) +
+    xlab('Hour of Day') +
+    ylab('Count')
   return(p)
 }
