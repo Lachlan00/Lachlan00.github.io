@@ -7,7 +7,8 @@ source('./V_functions.R')
 # load your data with super efficient function
 df <- read_V_csv('./ALL_VA_&_BB.csv')
 
-# make some plots and save them to a pdf file
+# make some plots
+plot_behaviour(df)
 plot_behaviour(df, c('A - ooom', 'B - ooom'))
 plot_behaviour(df, c('A - ooom', 'B - ooom'), split_months=TRUE)
 plot_behaviour(df, c('Circling', 'Pecking', 'Ruffle feathers', 'Wing display', 'Jump Fly'))
