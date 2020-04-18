@@ -26,7 +26,7 @@ plot_behaviour <- function(df, behaviours='all', split_months=FALSE){
   # make sure behaviour is a factor
   df$behaviour_type <- as.factor(df$behaviour_type)
   # filter for behaviours
-  if (behaviours != 'all'){
+  if (behaviours[1] != 'all'){
     df <- df[df$behaviour_type %in% behaviours,]
     # set factor levels
     df$behaviour_type <- factor(df$behaviour_type, levels=behaviours)
